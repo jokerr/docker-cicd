@@ -1,0 +1,52 @@
+version: '3'
+
+networks:
+    cicd:
+        driver: bridge
+
+services:
+    jenkins: 
+        build: ./jenkins-master
+        image: jokerr/jenkins-master
+        container_name: jokerr-jenkins-master
+        ports:
+         - "8080:8080"
+         - "443:443"
+         - "5000:5000"
+        networks:
+         - cicd
+        environment:
+         - JAVA_OPTS="-Xmx2g"
+        volumes:
+         - 'jenkins-data:/var/jenkins_home'
+    
+    sonar:
+        build: ./sonar
+        image: jokerr/sonar:6.5
+        container_name: jokerr-sonar
+        ports:
+         - "9000:9000"
+        # volumes:
+        #  - /opt/sonarqube/data:/opt/sonarqube/sonarqube
+        networks: 
+         - cicd
+        depends_on:
+         - sonar-db
+        environment:
+         - SONARQUBE_JDBC_URL=jdbc:postgresql://sonar-db:5432/sonar
+         - SONARQUBE_JDBC_USERNAME=sonar
+         - SONARQUBE_JDBC_PASSWORD=sonar
+    
+    sonar-db:
+        image: postgres
+        environment:
+         - POSTGRES_USER=sonar
+         - POSTGRES_PASSWORD=sonar
+        volumes:
+         - /opt/postgres/data:/var/lib/postgresql/data
+        networks:
+         - cicd
+
+volumes:
+    jenkins-data:
+        driver: local
