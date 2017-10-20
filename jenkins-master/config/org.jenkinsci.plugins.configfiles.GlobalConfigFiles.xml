@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<org.jenkinsci.plugins.configfiles.GlobalConfigFiles plugin="config-file-provider@2.16.4">
+  <configs class="sorted-set">
+    <comparator class="org.jenkinsci.plugins.configfiles.GlobalConfigFiles$1"/>
+    <org.jenkinsci.plugins.configfiles.maven.GlobalMavenSettingsConfig>
+      <id>maven-global-settings.xml</id>
+      <name>Maven Global Settings</name>
+      <comment>global settings</comment>
+      <content>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+&lt;settings xmlns=&quot;http://maven.apache.org/SETTINGS/1.0.0&quot; 
+          xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+          xsi:schemaLocation=&quot;http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd&quot;&gt;
+  &lt;pluginGroups&gt;
+    &lt;pluginGroup&gt;org.sonarsource.scanner.maven&lt;/pluginGroup&gt;
+  &lt;/pluginGroups&gt;
+
+  &lt;profiles&gt;
+    &lt;profile&gt;
+      &lt;id&gt;sonar&lt;/id&gt;
+      &lt;activation&gt;
+        &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+      &lt;/activation&gt;
+      &lt;properties&gt;
+      &lt;/properties&gt;
+    &lt;/profile&gt;
+  &lt;/profiles&gt;
+&lt;/settings&gt;
+</content>
+      <providerId>org.jenkinsci.plugins.configfiles.maven.GlobalMavenSettingsConfig</providerId>
+      <serverCredentialMappings/>
+      <isReplaceAll>true</isReplaceAll>
+    </org.jenkinsci.plugins.configfiles.maven.GlobalMavenSettingsConfig>
+  </configs>
+</org.jenkinsci.plugins.configfiles.GlobalConfigFiles>

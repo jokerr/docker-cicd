@@ -7,8 +7,8 @@ networks:
 services:
     jenkins: 
         build: ./jenkins-master
-        image: jokerr/jenkins-master
-        container_name: jokerr-jenkins-master
+        image: cicd/jenkins-master:2.60.3
+        container_name: cicd-jenkins-master
         ports:
          - "8080:8080"
          - "443:443"
@@ -19,11 +19,12 @@ services:
          - JAVA_OPTS="-Xmx2g"
         volumes:
          - 'jenkins-data:/var/jenkins_home'
+         - /var/run/docker.sock:/var/run/docker.sock
     
     sonar:
         build: ./sonar
-        image: jokerr/sonar:6.5
-        container_name: jokerr-sonar
+        image: cicd/sonar:6.5
+        container_name: cicd-sonar
         ports:
          - "9000:9000"
         # volumes:
@@ -38,7 +39,8 @@ services:
          - SONARQUBE_JDBC_PASSWORD=sonar
     
     sonar-db:
-        image: postgres
+        image: postgres:10
+        container_name: cicd-postgres
         environment:
          - POSTGRES_USER=sonar
          - POSTGRES_PASSWORD=sonar
