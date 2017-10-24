@@ -22,8 +22,7 @@ services:
          - /var/run/docker.sock:/var/run/docker.sock
     
     sonar:
-        build: ./sonar
-        image: cicd/sonar:1.0.0
+        image: sonarqube:6.5
         container_name: cicd-sonar
         ports:
          - "9000:9000"
