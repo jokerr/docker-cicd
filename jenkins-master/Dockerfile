@@ -14,13 +14,20 @@ RUN mv docker/* /usr/bin/
 
 USER jenkins
 
-# # Install plugins - see https://github.com/jenkinsci/docker#preinstalling-plugins
+# Install plugins - see https://github.com/jenkinsci/docker#preinstalling-plugins
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+
+# setup Gradle and Maven
+COPY config/hudson.plugins.gradle.Gradle.xml /var/jenkins_home/hudson.plugins.gradle.Gradle.xml
+COPY config/hudson.tasks.Maven.xml /var/jenkins_home/hudson.tasks.Maven.xml
+COPY config/org.jenkinsci.plugins.configfiles.GlobalConfigFiles.xml /var/jenkins_home/org.jenkinsci.plugins.configfiles.GlobalConfigFiles.xml
+
+# setup initial job
+COPY jobs /var/jenkins_home/jobs
+
 # skip plugin prompts
 RUN echo 2.0 > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
 
-# # Skip initial setup
+# Skip initial setup
 # ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
-
-USER jenkins

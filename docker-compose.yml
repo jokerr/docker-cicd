@@ -7,7 +7,7 @@ networks:
 services:
     jenkins: 
         build: ./jenkins-master
-        image: cicd/jenkins-master:2.60.3
+        image: cicd/jenkins-master:1.0.0
         container_name: cicd-jenkins-master
         ports:
          - "8080:8080"
@@ -18,17 +18,20 @@ services:
         environment:
          - JAVA_OPTS="-Xmx2g"
         volumes:
-         - 'jenkins-data:/var/jenkins_home'
+         - jenkins-data:/var/jenkins_home
          - /var/run/docker.sock:/var/run/docker.sock
     
     sonar:
         build: ./sonar
-        image: cicd/sonar:6.5
+        image: cicd/sonar:1.0.0
         container_name: cicd-sonar
         ports:
          - "9000:9000"
-        # volumes:
-        #  - /opt/sonarqube/data:/opt/sonarqube/sonarqube
+        volumes:
+         - sonar_conf:/opt/sonarqube/conf
+         - sonar_data:/opt/sonarqube/data
+         - sonar_ext:/opt/sonarqube/extensions
+         - sonar_bundle:/opt/sonarqube/lib/bundled-plugins
         networks: 
          - cicd
         depends_on:
@@ -39,7 +42,9 @@ services:
          - SONARQUBE_JDBC_PASSWORD=sonar
     
     sonar-db:
-        image: postgres:10
+        restart: always
+        build: ./sonar-db
+        image: cicd/postgres:1.0.0
         container_name: cicd-postgres
         environment:
          - POSTGRES_USER=sonar
@@ -51,4 +56,7 @@ services:
 
 volumes:
     jenkins-data:
-        driver: local
+    sonar_conf:
+    sonar_data:
+    sonar_ext:
+    sonar_bundle:

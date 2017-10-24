@@ -29,15 +29,6 @@ RUN set -ex && \
     rm sonarqube.zip* && \
     rm -rf $SONARQUBE_HOME/bin/*
 
-# # Install plugins
-# ENV PLUGIN_JAVA=4.14.0.11784 \
-#     PLUGIN_GIT=1.2 \
-#     PLUGIN_JS=3.2.0.5506 \
-#     PLUGIN_PYTHON=1.8.0.1496
-
-# RUN mkdir -p $SONARQUBE_HOME/extensions/plugins/
-# ADD http://central.maven.org/maven2/org/sonarsource/java/sonar-java-plugin/${PLUGIN_JAVA}/sonar-java-plugin-${PLUGIN_JAVA}.jar $SONARQUBE_HOME/extensions/plugins/sonar-java-plugin-${PLUGIN_JAVA}.jar
-
 VOLUME "${SONARQUBE_HOME}/data"
 
 WORKDIR ${SONARQUBE_HOME}
